@@ -5,8 +5,13 @@ import datetime as dt
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QWidget, QDesktopWidget
+# from PyQt5.QtWidgets import * 
+from PyQt5 import QtCore 
+from PyQt5 import QtGui 
 
 app = QApplication(sys.argv)
+
+app.setWindowIcon(QtGui.QIcon('blackicon.svg')) 
 
 window = QWidget()
 window.setWindowTitle('Dark Theme Text Editor')
@@ -25,6 +30,9 @@ window2.move(centerPoint.x(),0)
 helloMsg2 = QLabel('<p>p text</p>', parent=window2)
 helloMsg2.move(60, 15)
 
-window2.show()
 
-sys.exit(app.exec_())
+if __name__ == "__main__":
+  
+    window2.show()
+
+    sys.exit(app.exec_())
