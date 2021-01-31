@@ -29,6 +29,8 @@ class Window(QMainWindow):
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
+        self.options = self.menuBar().addMenu("&Options")
+        self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
 
     def _createToolBar(self):
@@ -37,9 +39,13 @@ class Window(QMainWindow):
         tools.addAction('Exit', self.close)
 
     def _createStatusBar(self):
-        status = QStatusBar()
-        status.showMessage('New file')
+        self.status = QStatusBar()
+        self.status.showMessage('New file')
         self.setStatusBar(status)
+
+    def about(self):
+        # TODO! Create an about window refering to the Github repo
+        print('about')
 
 
 if __name__ == "__main__":
