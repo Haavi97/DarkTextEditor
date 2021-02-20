@@ -35,9 +35,13 @@ class Window(QMainWindow):
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
-        self.options = self.menuBar().addMenu("&Options")
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
+
+        
+        self.options = self.menuBar().addMenu("&Options")
+
+        self.options.addAction('&Font', self.font)
 
     def _createToolBar(self):
         tools = QToolBar()
@@ -51,6 +55,9 @@ class Window(QMainWindow):
 
     def about(self):
         self.about_window.show()
+
+    def font(self):
+        print("To be implemented")
 
 
 class About(QMainWindow):
