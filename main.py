@@ -26,7 +26,8 @@ class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle('Dark Theme Text Editor')
-        self.setCentralWidget(QTextEdit())
+        self._editBox = QTextEdit()
+        self.setCentralWidget(self._editBox)
         self.setStyleSheet(style)
         self._createMenu()
         self._createToolBar()
@@ -46,6 +47,7 @@ class Window(QMainWindow):
     def _createToolBar(self):
         tools = QToolBar()
         self.addToolBar(tools)
+        tools.addAction('Save', self.save)
         tools.addAction('Exit', self.close)
 
     def _createStatusBar(self):
@@ -58,6 +60,9 @@ class Window(QMainWindow):
 
     def font(self):
         print("To be implemented")
+
+    def save(self):
+        print(self._editBox.toPlainText())
 
 
 class About(QMainWindow):
