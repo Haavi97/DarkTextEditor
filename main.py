@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QWidget, QDesktopWidget
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QStatusBar
 from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtGui import QColor
 # from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -33,6 +34,7 @@ class Window(QMainWindow):
         self._createToolBar()
         self._createStatusBar()
         self.about_window = About()
+        self._fileDialog = QFileDialog()
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -63,6 +65,12 @@ class Window(QMainWindow):
 
     def save(self):
         print(self._editBox.toPlainText())
+        name = self._fileDialog.getSaveFileName(self)
+        print(name[0])
+        file = open(name[0],'w')
+        text = self._editBox.toPlainText()
+        file.write(text)
+        file.close()
 
 
 class About(QMainWindow):
