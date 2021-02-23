@@ -65,12 +65,13 @@ class Window(QMainWindow):
 
     def save(self):
         print(self._editBox.toPlainText())
-        name = self._fileDialog.getSaveFileName(self)
-        print(name[0])
-        file = open(name[0],'w')
-        text = self._editBox.toPlainText()
-        file.write(text)
-        file.close()
+        name = self._fileDialog.getSaveFileName(self)[0]
+        if name != '':
+            print(name)
+            file = open(name,'w')
+            text = self._editBox.toPlainText()
+            file.write(text)
+            file.close()
 
 
 class About(QMainWindow):
