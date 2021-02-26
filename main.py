@@ -35,6 +35,8 @@ class Window(QMainWindow):
         self._createStatusBar()
         self.about_window = About()
         self._fileDialog = QFileDialog()
+        self._autosaveText = 'Enable autosave'
+        self._autosave = False
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -51,6 +53,7 @@ class Window(QMainWindow):
         self.addToolBar(tools)
         tools.addAction('Save', self.save)
         tools.addAction('Exit', self.close)
+        tools.addAction(self._autosaveText, self.autosave)
 
     def _createStatusBar(self):
         self.status = QStatusBar()
@@ -72,6 +75,13 @@ class Window(QMainWindow):
             text = self._editBox.toPlainText()
             file.write(text)
             file.close()
+    
+    def autosave(self):
+        if self._autosave:
+            self._autosaveText = 'Enable autosave'
+        else:
+            self._autosaveText = 'Disable autosave'
+        self._autosave = not self._autosave
 
 
 class About(QMainWindow):
