@@ -19,13 +19,15 @@ from PyQt5 import QtGui
 whiteColor = QColor(255, 255, 255)
 blackColor = QColor(0, 0, 0)
 
-style = "background-color: rgb(0, 0, 0); color: rgb(255,255,255);"
+style = ''.join(open("style.css", "r").read().split("\n"))
 about_file = "about.html"
 
 
 class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._autosaveText = 'Enable autosave'
+        self._autosave = False
         self.setWindowTitle('Dark Theme Text Editor')
         self._editBox = QTextEdit()
         self.setCentralWidget(self._editBox)
@@ -35,8 +37,6 @@ class Window(QMainWindow):
         self._createStatusBar()
         self.about_window = About()
         self._fileDialog = QFileDialog()
-        self._autosaveText = 'Enable autosave'
-        self._autosave = False
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
