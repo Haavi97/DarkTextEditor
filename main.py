@@ -14,13 +14,18 @@ from PyQt5.QtGui import QColor
 # from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
+import json
+
+with open('conf.json', 'r') as conf_file:
+    conf = json.load(conf_file)
 
 
 whiteColor = QColor(255, 255, 255)
 blackColor = QColor(0, 0, 0)
 
-style = ''.join(open("style.css", "r").read().split("\n"))
-about_file = "about.html"
+about_file = conf['about_file']
+style_file = conf['style_file']
+style = ''.join(open(style_file, 'r').read().split('\n'))
 
 
 class Window(QMainWindow):
@@ -88,8 +93,8 @@ class About(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle('About page')
-        f = open(about_file, "r")
-        self.about_text = f.read()
+        with open(about_file, "r") as f:
+            self.about_text = f.read()
         f.close()
         self.setCentralWidget(QLabel(self.about_text))
         self.setStyleSheet(style)
