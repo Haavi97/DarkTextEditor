@@ -29,7 +29,7 @@ style = ''.join(open(style_file, 'r').read().split('\n'))
 
 
 class Window(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, w, h, parent=None):
         super().__init__(parent)
         self._autosaveText = 'Enable autosave'
         self._autosave = False
@@ -42,13 +42,13 @@ class Window(QMainWindow):
         self._createStatusBar()
         self.about_window = About()
         self._fileDialog = QFileDialog()
+        self.resize(w, h)
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
 
-        
         self.options = self.menuBar().addMenu("&Options")
 
         self.options.addAction('&Font', self.font)
@@ -76,11 +76,11 @@ class Window(QMainWindow):
         name = self._fileDialog.getSaveFileName(self)[0]
         if name != '':
             print(name)
-            file = open(name,'w')
+            file = open(name, 'w')
             text = self._editBox.toPlainText()
             file.write(text)
             file.close()
-    
+
     def autosave(self):
         if self._autosave:
             self._autosaveText = 'Enable autosave'
@@ -99,11 +99,18 @@ class About(QMainWindow):
         self.setCentralWidget(QLabel(self.about_text))
         self.setStyleSheet(style)
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
-    win = Window()
+    screen = app.primaryScreen()
+    size = screen.size()
+    rect = screen.availableGeometry()
+
+    p = 0.7
+
+    win = Window(int(rect.width()*p), int(rect.height()*p))
     win.show()
 
     sys.exit(app.exec_())
