@@ -40,7 +40,7 @@ class Window(QMainWindow):
         self._createMenu()
         self._createToolBar()
         self._createStatusBar()
-        self.about_window = About()
+        self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
         self.resize(w, h)
 
@@ -90,7 +90,7 @@ class Window(QMainWindow):
 
 
 class About(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, w, h, parent=None):
         super().__init__(parent)
         self.setWindowTitle('About page')
         with open(about_file, "r") as f:
@@ -98,6 +98,7 @@ class About(QMainWindow):
         f.close()
         self.setCentralWidget(QLabel(self.about_text))
         self.setStyleSheet(style)
+        self.resize(w, h)
 
 
 if __name__ == "__main__":
