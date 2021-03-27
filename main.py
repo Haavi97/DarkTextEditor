@@ -33,6 +33,7 @@ class Window(QMainWindow):
         super().__init__(parent)
         self._autosaveText = 'Enable autosave'
         self._autosave = False
+        self.name = ''
         self.setWindowTitle('Dark Theme Text Editor')
         self._editBox = QTextEdit()
         self.setCentralWidget(self._editBox)
@@ -42,7 +43,7 @@ class Window(QMainWindow):
         self._createStatusBar()
         self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
-        self.resize(w, h)
+        self.resize(int(w), int(h))
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -65,21 +66,32 @@ class Window(QMainWindow):
         self.status.showMessage('New file')
         self.setStatusBar(self.status)
 
+    def updateStatusBar(self, text):
+        self.status.showMessage(text)
+        self.setStatusBar(self.status)
+
     def about(self):
         self.about_window.show()
 
     def font(self):
         print("To be implemented")
+    
+    def saveFile(self):
+        file = open(self.name, 'w')
+        text = self._editBox.toPlainText()
+        file.write(text)
+        file.close()
 
     def save(self):
         print(self._editBox.toPlainText())
-        name = self._fileDialog.getSaveFileName(self)[0]
-        if name != '':
-            print(name)
-            file = open(name, 'w')
-            text = self._editBox.toPlainText()
-            file.write(text)
-            file.close()
+        if self.name != '':
+            self.updateStatusBar(self.name)
+            self.saveFile()
+        else:
+            self.name = self._fileDialog.getSaveFileName(self)[0]
+            if self.name != '':
+                self.saveFile()
+
 
     def autosave(self):
         if self._autosave:
@@ -98,7 +110,7 @@ class About(QMainWindow):
         f.close()
         self.setCentralWidget(QLabel(self.about_text))
         self.setStyleSheet(style)
-        self.resize(w, h)
+        self.resize(int(w), int(h))
 
 
 if __name__ == "__main__":
