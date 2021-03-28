@@ -1,5 +1,8 @@
 {
     "style_file": "style.css",
-    "about_file": "about.html"
+    "about_file": "about.html",
+    "default-font-size": 20,
+    "background-color": "rgb(0, 0, 0)",
+    "font-color": "rgb(255, 255, 255)"
 
 }

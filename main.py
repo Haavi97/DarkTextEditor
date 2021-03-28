@@ -34,10 +34,15 @@ class Window(QMainWindow):
         self._autosaveText = 'Enable autosave'
         self._autosave = False
         self.name = ''
+        self.font_size = conf['default-font-size']
+        self.font = 'font-size: ' +  str(conf['default-font-size'])
+        self.background_color = 'background-color: ' + conf['background-color']
+        self.font_color = 'color: ' +  conf['font-color']
+        self.style = ''
+        self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
         self._editBox = QTextEdit()
         self.setCentralWidget(self._editBox)
-        self.setStyleSheet(style)
         self._createMenu()
         self._createToolBar()
         self._createStatusBar()
@@ -49,10 +54,8 @@ class Window(QMainWindow):
         self.menu = self.menuBar().addMenu("&Menu")
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
-
         self.options = self.menuBar().addMenu("&Options")
-
-        self.options.addAction('&Font', self.font)
+        self.options.addAction('&Font', self.fontMenu)
 
     def _createToolBar(self):
         tools = QToolBar()
@@ -72,9 +75,6 @@ class Window(QMainWindow):
 
     def about(self):
         self.about_window.show()
-
-    def font(self):
-        print("To be implemented")
     
     def saveFile(self):
         file = open(self.name, 'w')
@@ -99,6 +99,24 @@ class Window(QMainWindow):
         else:
             self._autosaveText = 'Disable autosave'
         self._autosave = not self._autosave
+
+    def changeFontSize(self, size):
+        self.font = 'font-size:{}px'.format(int(size))
+        self.updateStyle()
+
+    def wheelEvent(self, event):
+        self.font_size += event.angleDelta().y()/280
+        self.changeFontSize(self.font_size)
+
+    def fontMenu(self):
+        print('Font menu to be implemented')
+    
+    def updateStyle(self):
+        self.style = ''
+        self.style += self.font + ';'
+        self.style += self.background_color + ';'
+        self.style += self.font_color + ';'
+        self.setStyleSheet(self.style)
 
 
 class About(QMainWindow):
