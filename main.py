@@ -41,7 +41,7 @@ class Window(QMainWindow):
         self.style = ''
         self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
-        self._editBox = QTextEdit()
+        self._editBox = QTextEdit()#EditBox(self)
         self.setCentralWidget(self._editBox)
         self._createMenu()
         self._createToolBar()
@@ -49,6 +49,10 @@ class Window(QMainWindow):
         self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
         self.resize(int(w), int(h))
+        self.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self._editBox.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.save)
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -62,7 +66,7 @@ class Window(QMainWindow):
         self.addToolBar(tools)
         tools.addAction('Save', self.save)
         tools.addAction('Exit', self.close)
-        tools.addAction(self._autosaveText, self.autosave)
+        self.saveAction = tools.addAction(self._autosaveText, self.autosave)
 
     def _createStatusBar(self):
         self.status = QStatusBar()
@@ -96,9 +100,14 @@ class Window(QMainWindow):
     def autosave(self):
         if self._autosave:
             self._autosaveText = 'Enable autosave'
+            self._autosave = True
+            self.timer.stop()
         else:
             self._autosaveText = 'Disable autosave'
-        self._autosave = not self._autosave
+            self._autosave = False
+            self.timer.start(1000)
+        print(self._autosave)
+        self.saveAction.setText(self._autosaveText)
 
     def changeFontSize(self, size):
         self.font = 'font-size:{}px'.format(int(size))
@@ -117,6 +126,11 @@ class Window(QMainWindow):
         self.style += self.background_color + ';'
         self.style += self.font_color + ';'
         self.setStyleSheet(self.style)
+
+    def keyPressEvent(self, event):
+        if event.key() != None and self.name != '' and self._autosave:
+            self.saveFile()
+            print('Saving file')
 
 
 class About(QMainWindow):
