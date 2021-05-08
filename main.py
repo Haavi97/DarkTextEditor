@@ -56,6 +56,7 @@ class Window(QMainWindow):
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
+        self.menu.addAction('&Open file', self.openFile)
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
         self.options = self.menuBar().addMenu("&Options")
@@ -87,7 +88,6 @@ class Window(QMainWindow):
         file.close()
 
     def save(self):
-        print(self._editBox.toPlainText())
         if self.name != '':
             self.updateStatusBar(self.name)
             self.saveFile()
@@ -106,7 +106,6 @@ class Window(QMainWindow):
             self._autosaveText = 'Disable autosave'
             self._autosave = False
             self.timer.start(1000)
-        print(self._autosave)
         self.saveAction.setText(self._autosaveText)
 
     def changeFontSize(self, size):
@@ -127,10 +126,8 @@ class Window(QMainWindow):
         self.style += self.font_color + ';'
         self.setStyleSheet(self.style)
 
-    def keyPressEvent(self, event):
-        if event.key() != None and self.name != '' and self._autosave:
-            self.saveFile()
-            print('Saving file')
+    def openFile(self):
+        print('To be implemented')
 
 
 class About(QMainWindow):
