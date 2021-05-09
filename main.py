@@ -41,7 +41,7 @@ class Window(QMainWindow):
         self.style = ''
         self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
-        self._editBox = QTextEdit()#EditBox(self)
+        self._editBox = QTextEdit()
         self.setCentralWidget(self._editBox)
         self._createMenu()
         self._createToolBar()
@@ -127,7 +127,10 @@ class Window(QMainWindow):
         self.setStyleSheet(self.style)
 
     def openFile(self):
-        print('To be implemented')
+        self.name = QFileDialog.getOpenFileName(self, 'Open file')[0]
+        with open(self.name, 'r') as fn:
+            self._editBox.setText(fn.read())
+            self.save()
 
 
 class About(QMainWindow):
