@@ -57,6 +57,7 @@ class Window(QMainWindow):
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
         self.menu.addAction('&Open file', self.openFile)
+        self.menu.addAction('&Change encoding', self.changeEncoding)
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
         self.options = self.menuBar().addMenu("&Options")
@@ -95,7 +96,9 @@ class Window(QMainWindow):
             self.name = self._fileDialog.getSaveFileName(self)[0]
             if self.name != '':
                 self.saveFile()
-
+                self.updateStatusBar(self.name)
+            else:
+                self.updateStatusBar('Unsaved file')
 
     def autosave(self):
         if self._autosave:
@@ -131,6 +134,9 @@ class Window(QMainWindow):
         with open(self.name, 'r') as fn:
             self._editBox.setText(fn.read())
             self.save()
+
+    def changeEncoding(self):
+        print('To do. Change encoding')
 
 
 class About(QMainWindow):
