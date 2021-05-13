@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QStatusBar
 from PyQt5.QtWidgets import QToolBar
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFontDialog
 from PyQt5.QtGui import QColor
 # from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -38,6 +39,7 @@ class Window(QMainWindow):
         self.font = 'font-size: ' +  str(conf['default-font-size'])
         self.background_color = 'background-color: ' + conf['background-color']
         self.font_color = 'color: ' +  conf['font-color']
+        self.font_family = ''
         self.style = ''
         self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
@@ -120,13 +122,17 @@ class Window(QMainWindow):
         self.changeFontSize(self.font_size)
 
     def fontMenu(self):
-        print('Font menu to be implemented')
+        font, valid = QFontDialog.getFont()
+        if valid:
+            self.font_family = 'font-family:"{}";'.format(font)
+        self.updateStyle()
     
     def updateStyle(self):
         self.style = ''
         self.style += self.font + ';'
         self.style += self.background_color + ';'
         self.style += self.font_color + ';'
+        self.style += self.font_family + ';'
         self.setStyleSheet(self.style)
 
     def openFile(self):
