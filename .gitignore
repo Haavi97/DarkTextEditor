@@ -1,4 +1,4 @@
 Tutorial.url
 .vscode/
 .fake
-.ionide
+.ionide__pycache__/
