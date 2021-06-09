@@ -36,9 +36,9 @@ class Window(QMainWindow):
         self._autosave = False
         self.name = ''
         self.font_size = conf['default-font-size']
-        self.font = 'font-size: ' +  str(conf['default-font-size'])
+        self.font = 'font-size: ' + str(conf['default-font-size'])
         self.background_color = 'background-color: ' + conf['background-color']
-        self.font_color = 'color: ' +  conf['font-color']
+        self.font_color = 'color: ' + conf['font-color']
         self.font_family = ''
         self.style = ''
         self.updateStyle()
@@ -59,6 +59,7 @@ class Window(QMainWindow):
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
         self.menu.addAction('&Open file', self.openFile)
+        self.menu.addAction('&Save copy as', self.save_as)
         self.menu.addAction('&Change encoding', self.changeEncoding)
         self.menu.addAction('&About', self.about)
         self.menu.addAction('&Exit', self.close)
@@ -83,14 +84,14 @@ class Window(QMainWindow):
 
     def about(self):
         self.about_window.show()
-    
+
     def saveFile(self):
         file = open(self.name, 'w')
         text = self._editBox.toPlainText()
         file.write(text)
         file.close()
 
-    def save(self):
+    def save(self, bypass=False):
         if self.name != '':
             self.updateStatusBar(self.name)
             self.saveFile()
@@ -101,6 +102,9 @@ class Window(QMainWindow):
                 self.updateStatusBar(self.name)
             else:
                 self.updateStatusBar('Unsaved file')
+
+    def save_as(self):
+        self.save(bypass=True)
 
     def autosave(self):
         if self._autosave:
@@ -126,7 +130,7 @@ class Window(QMainWindow):
         if valid:
             self.font_family = 'font-family:"{}";'.format(font)
         self.updateStyle()
-    
+
     def updateStyle(self):
         self.style = ''
         self.style += self.font + ';'
