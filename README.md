@@ -9,7 +9,7 @@
 
 ## TODO
  - [ ] Changeable default font
- - [ ] App icon
+ - [X] App icon (https://programmersought.com/article/86065821752/)
  - [ ] Copy-paste erase format
  - [ ] Start optimization
 

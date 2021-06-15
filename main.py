@@ -1,4 +1,5 @@
 import sys
+import os
 import time
 import datetime as dt
 import threading
@@ -162,6 +163,9 @@ class About(QMainWindow):
 
 
 if __name__ == "__main__":
+    if os.name == 'nt':
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
