@@ -44,7 +44,7 @@ class Window(QMainWindow):
         self.style = ''
         self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
-        self._editBox = TextEdit()
+        self._editBox = QTextEdit()
         self.setCentralWidget(self._editBox)
         self._createMenu()
         self._createToolBar()
@@ -56,12 +56,8 @@ class Window(QMainWindow):
         self._editBox.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.save)
-
-        self.pasteAction = QAction(QtGui.QIcon(
-            "icons/paste.png"), "Paste from clipboard", self)
-        self.pasteAction.setStatusTip("Paste text from clipboard")
-        self.pasteAction.setShortcut("Ctrl+V")
-        self.pasteAction.triggered.connect(self.simple_paste)
+        self._editBox.setAcceptRichText(False)
+        
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -155,18 +151,6 @@ class Window(QMainWindow):
     def changeEncoding(self):
         print('To do. Change encoding')
 
-    def simple_paste(self):
-        print(QtGui.QClipboard.text())
-        self._editBox.text = QtGui.QClipboard.text()
-
-
-class TextEdit(QTextEdit):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def insertFromMimeData(self, data):
-        self.plainText  = str(data.text())
-
 
 class About(QMainWindow):
     def __init__(self, w, h, parent=None):
@@ -183,8 +167,7 @@ class About(QMainWindow):
 if __name__ == "__main__":
     if os.name == 'nt':
         import ctypes
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
-            "myappid")
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
