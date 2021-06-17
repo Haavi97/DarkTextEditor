@@ -32,32 +32,44 @@ style = ''.join(open(style_file, 'r').read().split('\n'))
 
 class Window(QMainWindow):
     def __init__(self, w, h, parent=None):
+        # Inheritance
         super().__init__(parent)
-        self._autosaveText = 'Enable autosave'
-        self._autosave = False
+
+        # Basic parameters
         self.name = ''
+
+        # Style parameters
         self.font_size = conf['default-font-size']
         self.font = 'font-size: ' + str(conf['default-font-size'])
         self.background_color = 'background-color: ' + conf['background-color']
         self.font_color = 'color: ' + conf['font-color']
         self.font_family = ''
         self.style = ''
-        self.updateStyle()
-        self.setWindowTitle('Dark Theme Text Editor')
+
+        self._autosaveText = 'Enable autosave'
+        self._autosave = False
+
+        # Main widgets
         self._editBox = QTextEdit()
-        self.setCentralWidget(self._editBox)
-        self._createMenu()
-        self._createToolBar()
-        self._createStatusBar()
         self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
+
+        # Setting edit box main properties
+        self.setCentralWidget(self._editBox)
         self.resize(int(w), int(h))
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         self._editBox.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self._editBox.setAcceptRichText(False)  # Erase format when pasting
+
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.save)
-        self._editBox.setAcceptRichText(False)
-        
+
+        # Initial functions
+        self.updateStyle()
+        self.setWindowTitle('Dark Theme Text Editor')
+        self._createMenu()
+        self._createToolBar()
+        self._createStatusBar()
 
     def _createMenu(self):
         self.menu = self.menuBar().addMenu("&Menu")
@@ -167,7 +179,8 @@ class About(QMainWindow):
 if __name__ == "__main__":
     if os.name == 'nt':
         import ctypes
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+            "myappid")
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
