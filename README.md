@@ -1,6 +1,8 @@
 # Dark Text Editor
 > Simple dark text editor GUI using pyQT
 
+I was a bit tired of the Notepad aplication that Windows has for the simple texts since it cannot be configured to be in dark mode. I know I can use some IDE like VSC but for simple things it is handy to have an easy launch simple text editor. That's why I have programmed this one. Also for fun of learning PyQT. 
+
 ## Installation
 
 
@@ -16,6 +18,7 @@
  - [ ] Order and clean code
  - [ ] Ctrl+z
  - [ ] Start optimization
+ - [ ] Add notification if closing and there is text not saved. 
 
 ## Contact
 Email: <fortin@taltech.ee>

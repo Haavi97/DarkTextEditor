@@ -93,13 +93,14 @@ class Window(QMainWindow):
         self.status.showMessage('New file')
         self.setStatusBar(self.status)
 
+    def about(self):
+        self.about_window.show()
+
     def updateStatusBar(self, text):
         self.status.showMessage(text)
         self.setStatusBar(self.status)
 
-    def about(self):
-        self.about_window.show()
-
+    # SAVE METHODS
     def saveFile(self):
         file = open(self.name, 'w')
         text = self._editBox.toPlainText()
@@ -132,13 +133,10 @@ class Window(QMainWindow):
             self.timer.start(1000)
         self.saveAction.setText(self._autosaveText)
 
+    # STYLE METHODS
     def changeFontSize(self, size):
         self.font = 'font-size:{}px'.format(int(size))
         self.updateStyle()
-
-    def wheelEvent(self, event):
-        self.font_size += event.angleDelta().y()/280
-        self.changeFontSize(self.font_size)
 
     def fontMenu(self):
         font, valid = QFontDialog.getFont()
@@ -154,6 +152,7 @@ class Window(QMainWindow):
         self.style += self.font_family + ';'
         self.setStyleSheet(self.style)
 
+    # OTHER METHODS
     def openFile(self):
         self.name = QFileDialog.getOpenFileName(self, 'Open file')[0]
         with open(self.name, 'r') as fn:
@@ -162,6 +161,10 @@ class Window(QMainWindow):
 
     def changeEncoding(self):
         print('To do. Change encoding')
+
+    def wheelEvent(self, event):
+        self.font_size += event.angleDelta().y()/280
+        self.changeFontSize(self.font_size)
 
 
 class About(QMainWindow):
@@ -177,10 +180,13 @@ class About(QMainWindow):
 
 
 if __name__ == "__main__":
+    # If the os is Windows there is need to do some
+    # trick for the icon to appear in the taskbar.
     if os.name == 'nt':
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
             "myappid")
+    
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
@@ -188,6 +194,7 @@ if __name__ == "__main__":
     size = screen.size()
     rect = screen.availableGeometry()
 
+    # Proportion of the windows size the application takes on launch
     p = 0.7
 
     win = Window(int(rect.width()*p), int(rect.height()*p))
