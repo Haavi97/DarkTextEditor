@@ -4,15 +4,12 @@ import time
 import datetime as dt
 import threading
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QLabel, QTextEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QLabel, QTextEdit, QShortcut
 from PyQt5.QtWidgets import QWidget, QDesktopWidget
-from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QStatusBar, QToolBar
-from PyQt5.QtWidgets import QAction
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QFontDialog
-from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QFileDialog, QFontDialog
+from PyQt5.QtGui import QColor, QKeySequence
 # from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5 import QtGui
@@ -49,6 +46,8 @@ class Window(QMainWindow):
         self._autosaveText = 'Enable autosave'
         self._autosave = False
 
+        self.encoding = 'utf-8'
+
         # Main widgets
         self._editBox = QTextEdit()
         self.about_window = About(w*0.5, h*0.5)
@@ -61,8 +60,15 @@ class Window(QMainWindow):
         self._editBox.setFocusPolicy(QtCore.Qt.StrongFocus)
         self._editBox.setAcceptRichText(False)  # Erase format when pasting
 
+        # Timer for the autosave
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.save)
+
+        # Shortcuts (https://zetcode.com/pyqt/qshortcut/)
+        self.ctrlsave = QShortcut(QKeySequence('Ctrl+S'), self)
+        self.ctrlsave.activated.connect(self.save)
+        self.quitSc = QShortcut(QKeySequence('Ctrl+Q'), self)
+        self.quitSc.activated.connect(QApplication.instance().quit)
 
         # Initial functions
         self.updateStyle()
@@ -103,7 +109,7 @@ class Window(QMainWindow):
     # SAVE METHODS
     def saveFile(self):
         file = open(self.name, 'wb')
-        text = (self._editBox.toPlainText()).encode('utf-8')
+        text = (self._editBox.toPlainText()).encode(self.encoding)
         file.write(text)
         file.close()
 
@@ -157,7 +163,7 @@ class Window(QMainWindow):
         self.name = QFileDialog.getOpenFileName(self, 'Open file')[0]
         try:
             with open(self.name, 'rb') as fn:
-                self._editBox.setText(fn.read().decode('utf-8'))
+                self._editBox.setText(fn.read().decode(self.encoding))
         except:
             print('To add message box of wrong encoding')
             with open(self.name, 'r') as fn:

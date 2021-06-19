@@ -15,9 +15,9 @@ I was a bit tired of the Notepad aplication that Windows has for the simple text
  - [X] Copy-paste erase format
  - [ ] Add functionality to change encoding button
  - [ ] Add encoding at the bottom
- - [ ] Fix opening of file. Fails to open in unicode
+ - [X] Fix opening of file. Fails to open in unicode
  - [ ] Order and clean code
- - [ ] Add Ctrl+s functionality
+ - [X] Add Ctrl+s functionality
  - [ ] Start optimization
  - [ ] Add notification if closing and there is text not saved. 
 
