@@ -102,8 +102,8 @@ class Window(QMainWindow):
 
     # SAVE METHODS
     def saveFile(self):
-        file = open(self.name, 'w')
-        text = self._editBox.toPlainText()
+        file = open(self.name, 'wb')
+        text = (self._editBox.toPlainText()).encode('utf-8')
         file.write(text)
         file.close()
 
@@ -155,9 +155,14 @@ class Window(QMainWindow):
     # OTHER METHODS
     def openFile(self):
         self.name = QFileDialog.getOpenFileName(self, 'Open file')[0]
-        with open(self.name, 'r') as fn:
-            self._editBox.setText(fn.read())
-            self.save()
+        try:
+            with open(self.name, 'rb') as fn:
+                self._editBox.setText(fn.read().decode('utf-8'))
+        except:
+            print('To add message box of wrong encoding')
+            with open(self.name, 'r') as fn:
+                self._editBox.setText(fn.read())
+        self.save()
 
     def changeEncoding(self):
         print('To do. Change encoding')
