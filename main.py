@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QLabel, QTextEdit, QShortcut
 from PyQt5.QtWidgets import QWidget, QDesktopWidget
 from PyQt5.QtWidgets import QStatusBar, QToolBar
-from PyQt5.QtWidgets import QFileDialog, QFontDialog
+from PyQt5.QtWidgets import QFileDialog, QFontDialog, QMessageBox
 from PyQt5.QtGui import QColor, QKeySequence
 # from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -165,7 +165,13 @@ class Window(QMainWindow):
             with open(self.name, 'rb') as fn:
                 self._editBox.setText(fn.read().decode(self.encoding))
         except:
-            print('To add message box of wrong encoding')
+            QMessageBox.information(self,
+                                    'Wrong encoding',
+                                    ('In case you see a weird behaivour' +
+                                     'with the text displayed.\n' +
+                                     'Please check what is the' +
+                                     'encoding of you file and set it on ' +
+                                     'the application correspondinly.'))
             with open(self.name, 'r') as fn:
                 self._editBox.setText(fn.read())
         self.save()
@@ -197,7 +203,7 @@ if __name__ == "__main__":
         import ctypes
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
             "myappid")
-    
+
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
