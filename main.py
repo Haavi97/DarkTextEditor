@@ -52,6 +52,12 @@ class Window(QMainWindow):
         self._editBox = QTextEdit()
         self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
+        self.closing_with_text = QMessageBox(QMessageBox.Warning,
+                                             'Unsaved text. Still close?',
+                                             'There is text not saved in the editor.\n' +
+                                             'Do you still want to close the editor?')
+        self.closing_with_text.setStandardButtons(
+            QMessageBox.Ok | QMessageBox.Cancel)
 
         # Setting edit box main properties
         self.setCentralWidget(self._editBox)
@@ -182,6 +188,18 @@ class Window(QMainWindow):
     def wheelEvent(self, event):
         self.font_size += event.angleDelta().y()/280
         self.changeFontSize(self.font_size)
+
+    # Handling close event
+    def closeEvent(self, event):
+        print("User has clicked the red x on the main window")
+        if self._editBox.toPlainText() != '':
+            retval = self.closing_with_text.exec_()
+            if retval == QMessageBox.Ok:
+                print('Ok pressed')
+                event.accept()
+            else:
+                print('Cancel pressed')
+                event.ignore()
 
 
 class About(QMainWindow):
