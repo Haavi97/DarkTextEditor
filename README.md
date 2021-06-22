@@ -13,13 +13,13 @@ I was a bit tired of the Notepad aplication that Windows has for the simple text
  - [ ] Changeable default font
  - [X] App icon (https://programmersought.com/article/86065821752/)
  - [X] Copy-paste erase format
- - [ ] Add functionality to change encoding button
+ - [X] Add functionality to change encoding button
  - [ ] Add encoding at the bottom
  - [X] Fix opening of file. Fails to open in unicode
  - [ ] Order and clean code
  - [X] Add Ctrl+s functionality
  - [ ] Start optimization
- - [ ] Add notification if closing and there is text not saved. 
+ - [X] Add notification if closing and there is text not saved. 
 
 ## Contact
 Email: <fortin@taltech.ee>

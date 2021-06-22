@@ -8,11 +8,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QLabel, QTextEdit, QShortcut
 from PyQt5.QtWidgets import QWidget, QDesktopWidget
 from PyQt5.QtWidgets import QStatusBar, QToolBar
-from PyQt5.QtWidgets import QFileDialog, QFontDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QFontDialog
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 from PyQt5.QtGui import QColor, QKeySequence
-# from PyQt5.QtWidgets import *
-from PyQt5 import QtCore
-from PyQt5 import QtGui
+from PyQt5 import QtCore, QtGui
 import json
 
 with open('conf.json', 'r') as conf_file:
@@ -52,6 +51,7 @@ class Window(QMainWindow):
         self._editBox = QTextEdit()
         self.about_window = About(w*0.5, h*0.5)
         self._fileDialog = QFileDialog()
+        self._encodingDialog = encodingDialog(self)
         self.closing_with_text = QMessageBox(QMessageBox.Warning,
                                              'Unsaved text. Still close?',
                                              'There is text not saved in the editor.\n' +
@@ -183,7 +183,9 @@ class Window(QMainWindow):
         self.save()
 
     def changeEncoding(self):
-        print('To do. Change encoding')
+        retval = self._encodingDialog.getItem()
+        self.encoding = retval
+        print(retval)
 
     def wheelEvent(self, event):
         self.font_size += event.angleDelta().y()/280
@@ -212,6 +214,21 @@ class About(QMainWindow):
         self.setCentralWidget(QLabel(self.about_text))
         self.setStyleSheet(style)
         self.resize(int(w), int(h))
+
+
+class encodingDialog(QWidget):
+    def __init__(self, parent = None):
+        super(encodingDialog, self).__init__(parent)
+    
+    def getItem(self):
+        # TODO! Add more encodings
+        items = ('utf-8', 'ascii', 'ansi')
+
+        item, ok = QInputDialog.getItem(self, "Select encoding", 
+            "List of encodings", items, 0, False)
+            
+        if ok and item:
+            return item
 
 
 if __name__ == "__main__":
