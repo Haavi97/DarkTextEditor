@@ -217,16 +217,15 @@ class About(QMainWindow):
 
 
 class encodingDialog(QWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(encodingDialog, self).__init__(parent)
-    
-    def getItem(self):
-        # TODO! Add more encodings
-        items = ('utf-8', 'ascii', 'ansi')
 
-        item, ok = QInputDialog.getItem(self, "Select encoding", 
-            "List of encodings", items, 0, False)
-            
+    def getItem(self):
+        items = ('utf-8', 'utf-16', 'utf-32', 'ascii', 'ansi', 'cp775')
+
+        item, ok = QInputDialog.getItem(self, "Select encoding",
+                                        "List of encodings", items, 0, False)
+
         if ok and item:
             return item
 

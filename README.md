@@ -3,10 +3,31 @@
 
 I was a bit tired of the Notepad aplication that Windows has for the simple texts since it cannot be configured to be in dark mode. I know I can use some IDE like VSC but for simple things it is handy to have an easy launch simple text editor. That's why I have programmed this one. Also for fun of learning PyQT. 
 
-## Installation
-
-
 ## Usage
+
+Just run the main file by typing:
+```bash
+python main.py
+```
+
+If you just one to have it as an executable you can use [```pyinstaller```](https://pypi.org/project/pyinstaller/) that can be installed using pip:
+
+```bash
+pip install pyinstaller
+```
+
+And then run:
+```bash
+pyinstaller main.py 
+```
+That will generate the desired .exe file in Windows. 
+## Supported encodings
+- ```utf-8```
+- ```utf-16```
+- ```utf-32```
+- ```ascii```
+- ```ansi```
+- ```cp775```, baltic languages
 
 
 ## TODO
