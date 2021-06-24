@@ -102,7 +102,8 @@ class Window(QMainWindow):
 
     def _createStatusBar(self):
         self.status = QStatusBar()
-        self.status.showMessage('New file')
+        self.status.showMessage(
+            'New file {:>}'.format('Encoding: ' + self.encoding))
         self.setStatusBar(self.status)
 
     def about(self):
@@ -185,6 +186,8 @@ class Window(QMainWindow):
     def changeEncoding(self):
         retval = self._encodingDialog.getItem()
         self.encoding = retval
+        self.updateStatusBar("{} | {:>}".format(
+            self.status.currentMessage(), 'Encoding: ' + self.encoding))
         print(retval)
 
     def wheelEvent(self, event):

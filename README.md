@@ -35,12 +35,13 @@ That will generate the desired .exe file in Windows.
  - [X] App icon (https://programmersought.com/article/86065821752/)
  - [X] Copy-paste erase format
  - [X] Add functionality to change encoding button
- - [ ] Add encoding at the bottom
+ - [X] Add encoding at the bottom
  - [X] Fix opening of file. Fails to open in unicode
  - [ ] Order and clean code
  - [X] Add Ctrl+s functionality
  - [ ] Start optimization
  - [X] Add notification if closing and there is text not saved. 
+ - [ ] Fix status bar disappearing content
 
 ## Contact
 Email: <fortin@taltech.ee>
