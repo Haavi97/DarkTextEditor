@@ -42,6 +42,7 @@ That will generate the desired .exe file in Windows.
  - [ ] Start optimization
  - [X] Add notification if closing and there is text not saved. 
  - [ ] Fix status bar disappearing content
+ - [X] Add a last save info in the status bar
 
 ## Contact
 Email: <fortin@taltech.ee>

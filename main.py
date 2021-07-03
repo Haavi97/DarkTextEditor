@@ -122,15 +122,18 @@ class Window(QMainWindow):
 
     def save(self, bypass=False):
         if self.name != '':
-            self.updateStatusBar(self.name)
-            self.saveFile()
+            self.save_update()
         else:
             self.name = self._fileDialog.getSaveFileName(self)[0]
             if self.name != '':
-                self.saveFile()
-                self.updateStatusBar(self.name)
+                self.save_update()
             else:
                 self.updateStatusBar('Unsaved file')
+
+    def save_update(self):
+        self.saveFile()
+        self.updateStatusBar(
+            "{:50}{:^9}Last saved: {}".format(self.name,'|', dt.datetime.today()))
 
     def save_as(self):
         self.save(bypass=True)
