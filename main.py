@@ -3,6 +3,7 @@ import os
 import time
 import datetime as dt
 import threading
+import traceback
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QLabel, QTextEdit, QShortcut
@@ -14,20 +15,9 @@ from PyQt5.QtGui import QColor, QKeySequence
 from PyQt5 import QtCore, QtGui
 import json
 
-with open('conf.json', 'r') as conf_file:
-    conf = json.load(conf_file)
-
-
-whiteColor = QColor(255, 255, 255)
-blackColor = QColor(0, 0, 0)
-
-about_file = conf['about_file']
-style_file = conf['style_file']
-style = ''.join(open(style_file, 'r').read().split('\n'))
-
 
 class Window(QMainWindow):
-    def __init__(self, w, h, parent=None):
+    def __init__(self, w, h, parent=None, fn=None):
         # Inheritance
         super().__init__(parent)
 
@@ -77,6 +67,8 @@ class Window(QMainWindow):
         self.quitSc.activated.connect(QApplication.instance().quit)
 
         # Initial functions
+        if fn != None:
+            self.openGiven(fn)
         self.updateStyle()
         self.setWindowTitle('Dark Theme Text Editor')
         self._createMenu()
@@ -133,7 +125,7 @@ class Window(QMainWindow):
     def save_update(self):
         self.saveFile()
         self.updateStatusBar(
-            "{:50}{:^9}Last saved: {}".format(self.name,'|', dt.datetime.today()))
+            "{:50}{:^9}Last saved: {}".format(self.name, '|', dt.datetime.today()))
 
     def save_as(self):
         self.save(bypass=True)
@@ -169,11 +161,14 @@ class Window(QMainWindow):
         self.setStyleSheet(self.style)
 
     # OTHER METHODS
+    def openGiven(self, given):
+        self.name = given
+        with open(self.name, 'rb') as fn:
+            self._editBox.setText(fn.read().decode(self.encoding))
+
     def openFile(self):
-        self.name = QFileDialog.getOpenFileName(self, 'Open file')[0]
         try:
-            with open(self.name, 'rb') as fn:
-                self._editBox.setText(fn.read().decode(self.encoding))
+            self.openGiven(QFileDialog.getOpenFileName(self, 'Open file')[0])
         except:
             QMessageBox.information(self,
                                     'Wrong encoding',
@@ -200,7 +195,7 @@ class Window(QMainWindow):
     # Handling close event
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
-        if self._editBox.toPlainText() != '':
+        if self._editBox.toPlainText() == '':
             retval = self.closing_with_text.exec_()
             if retval == QMessageBox.Ok:
                 print('Ok pressed')
@@ -237,24 +232,42 @@ class encodingDialog(QWidget):
 
 
 if __name__ == "__main__":
-    # If the os is Windows there is need to do some
-    # trick for the icon to appear in the taskbar.
-    if os.name == 'nt':
-        import ctypes
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
-            "myappid")
+    cd = sys.argv[0].split('\\')
+    with open('\\'.join(cd[:-1]) + '\\conf.json', 'r') as conf_file:
+        conf = json.load(conf_file)
 
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
+    whiteColor = QColor(255, 255, 255)
+    blackColor = QColor(0, 0, 0)
 
-    screen = app.primaryScreen()
-    size = screen.size()
-    rect = screen.availableGeometry()
+    about_file = conf['about_file']
+    style_file = conf['style_file']
+    style = ''.join(open(style_file, 'r').read().split('\n'))
 
-    # Proportion of the windows size the application takes on launch
-    p = 0.7
+    try:
+        # If the os is Windows there is need to do some
+        # trick for the icon to appear in the taskbar.
+        if os.name == 'nt':
+            import ctypes
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+                "myappid")
 
-    win = Window(int(rect.width()*p), int(rect.height()*p))
-    win.show()
+        app = QApplication(sys.argv)
+        app.setWindowIcon(QtGui.QIcon('blackicon.svg'))
 
-    sys.exit(app.exec_())
+        screen = app.primaryScreen()
+        size = screen.size()
+        rect = screen.availableGeometry()
+
+        # Proportion of the windows size the application takes on launch
+        p = 0.7
+        try:
+            fn = sys.argv[1]
+        except:
+            fn = None
+        win = Window(int(rect.width()*p), int(rect.height()*p), fn=fn)
+        win.show()
+
+        sys.exit(app.exec_())
+    except:
+        traceback.print_exc()
+        time.sleep(5)
