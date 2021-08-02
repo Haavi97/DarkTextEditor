@@ -231,16 +231,20 @@ class encodingDialog(QWidget):
             return item
 
 
+def app_path(fn):
+    return '\\'.join(cd[:-1]) + '\\' + fn
+
+
 if __name__ == "__main__":
     cd = sys.argv[0].split('\\')
-    with open('\\'.join(cd[:-1]) + '\\conf.json', 'r') as conf_file:
+    with open(app_path('conf.json'), 'r') as conf_file:
         conf = json.load(conf_file)
 
     whiteColor = QColor(255, 255, 255)
     blackColor = QColor(0, 0, 0)
 
-    about_file = conf['about_file']
-    style_file = conf['style_file']
+    about_file = app_path(conf['about_file'])
+    style_file = app_path(conf['style_file'])
     style = ''.join(open(style_file, 'r').read().split('\n'))
 
     try:
