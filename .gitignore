@@ -3,3 +3,6 @@ Tutorial.url
 .fake
 .ionide__pycache__/
 __pycache__/
+/build/
+/dist/
+main.exe
